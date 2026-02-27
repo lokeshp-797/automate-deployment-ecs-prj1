@@ -26,3 +26,26 @@ module "vpc" {
   security_group_count = var.security_group_count
 
 }
+
+module "instance" {
+  source = "./modules/jenkins_ec2_module"
+  is_instance_enabled = var.is_instance_enabled
+  public_route = var.public_route
+  from_port1 = var.from_port1
+  public-subnet-id = var.public-subnet-id
+  instance_count = var.instance_count
+  ec2_image = var.ec2_image
+  security_group_count = var.security_group_count
+  key_name = var.key_name
+  to_port1 = var.to_port1
+  to_port2 = var.to_port2
+  instance_name = var.instance_name
+  is_key_pair_enabled = var.is_key_pair_enabled
+  is_aws_security_group_enable = var.is_aws_security_group_enable
+  # subnet_id = var.subnet_id
+  is_vpc_enable = var.is_vpc_enable
+  from_port2 = var.from_port2
+  security_group_name = var.security_group_name
+  aws_instance_type = var.aws_instance_type
+
+}

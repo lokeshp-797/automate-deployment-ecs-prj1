@@ -1,7 +1,7 @@
 # Local .terraform directory (provider binaries and modules)
-
+*.pem
 .terraform/
-
+jenkins-deployment/.DS_Store
 # State files (NEVER commit these; use a remote backend like S3)
 *.tfstate
 *.tfstate.*

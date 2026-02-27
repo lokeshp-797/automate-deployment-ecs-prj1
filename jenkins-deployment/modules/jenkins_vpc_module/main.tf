@@ -45,33 +45,3 @@ resource "aws_route_table_association" "route-table-association1" {
   subnet_id      = aws_subnet.public-subnet-1[count.index].id
   route_table_id = aws_route_table.route_table[count.index].id
 }
-
-# resource "aws_security_group" "security_group" {
-#   count = "${var.is_vpc_enable == 1 && var.is_aws_security_group_enable == 1 ? var.security_group_count : 0 }"
-
-#   vpc_id = aws_vpc.vpc[count.index].id
-#   ingress {
-#     from_port = var.from_port1
-#     to_port = var.to_port1
-#     protocol = "tcp"
-#     cidr_blocks = [var.public_route]
-#   }
-
-#   ingress {
-#     from_port = var.from_port2
-#     to_port = var.to_port2
-#     protocol = "tcp"
-#     cidr_blocks = [var.public_route]
-#   }
-
-#   egress {
-#     from_port = 0
-#     to_port = 0   
-#     protocol = "-1"
-#     cidr_blocks = [var.public_route]
-#   }
-
-#   tags = {
-#     Name = var.security_group_name
-#   }
-# }
