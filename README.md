@@ -20,15 +20,18 @@ terraform apply -var-file="tfvars/dev.tfvars"
 
 # Connect to ec2 instance
 
-ssh -i "devops-test.pem" ubuntu@44.222.125.189
-
-http://44.222.125.189/
+ssh -i "devops-test.pem" ubuntu@100.53.24.3
 
 Install all dependencies
 Jenkins
 Terraform
 AWS CLI
 Trivy
+
+#### Jenkins web page below
+
+After installing dependencies above use below in browser:
+http://100.53.24.3:8080/
 
 systemctl start docker
 systemctl enable docker
@@ -62,3 +65,42 @@ Add docker to choose from latest docker.io url
 ====
 Add Credentials:
 Create aws user and get accesskey and secretkey
+
+##### Ansible install on mac
+
+brew install ansible
+sudo su
+mkdir /etc/ansible/playbooks
+cd /etc/ansible/playbooks
+
+Should able to see below files:
+ansible.cfg
+hosts.yml
+playbooks
+roles
+
+vim first.yml
+Add below code
+
+---
+
+- name: “My first playbook”
+  hosts: localhost
+  tasks:
+  - name: “test connectivity”
+    ping:
+
+# Run below command
+
+anisble-playbook /root/ansible/first.yml
+
+######
+
+Open hosts file and add ec2 instance ipaddress of jenkins
+
+#### commands to run below for ansible
+
+ansible-playbook -i hosts.yml playbooks/instance_configure_jenkins.yml
+
+Jenkins password from playbook output:
+"msg": "Your Jenkins Initial Admin Password is: 1f93cc2b38fb4f87b0631ad676afad98"

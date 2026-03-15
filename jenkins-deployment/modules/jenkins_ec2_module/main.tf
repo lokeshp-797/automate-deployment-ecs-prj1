@@ -55,11 +55,19 @@ resource "aws_instance" "jenkins-instance" {
     tags = {
         Name = var.instance_name
     }
+    lifecycle {
+  prevent_destroy = true
+  # Prevents specific changes from triggering a recreation
+    ignore_changes = [
+      ami,
+      user_data,
+    ]
+}
 }
 
 # Stop the instance
 # resource "aws_ec2_instance_state" "test_state_stopped" {
-#   count       = length(aws_instance.jenkins-instance) 
-#   instance_id = aws_instance.jenkins-instance[count.index].id
+#   # count       = length(aws_instance.jenkins-instance) 
+#   instance_id = var.stop_jenkins_instance_id
 #   state       = "stopped"
 # }

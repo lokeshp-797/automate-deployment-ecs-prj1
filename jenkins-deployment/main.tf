@@ -47,5 +47,6 @@ module "instance" {
   from_port2 = var.from_port2
   security_group_name = var.security_group_name
   aws_instance_type = var.aws_instance_type
+  stop_jenkins_instance_id = var.stop_jenkins_instance_id
 
 }

@@ -1,0 +1,66 @@
+---
+- hosts: jenkinsserver
+  become: true
+  vars:
+    java_packages:
+      - openjdk-17-jdk
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+
+    - name: Install Java
+      apt:
+        name: "{{ java_packages }}"
+        state: present
+
+    - name: Add Jenkins repository key
+      apt_key:
+        url: https://pkg.jenkins.io/debian/jenkins.io-2023.key
+        state: present
+
+    - name: Ensure /etc/apt/keyrings directory exists
+      ansible.builtin.file:
+        path: /etc/apt/keyrings
+        state: directory
+        mode: "0755"
+
+    - name: Download Jenkins GPG key
+      ansible.builtin.get_url:
+        url: https://pkg.jenkins.io/debian-stable/jenkins.io-2026.key
+        dest: /etc/apt/keyrings/jenkins-keyring.asc
+        mode: "0644"
+
+    - name: Add Jenkins repository (modern signed-by format)
+      ansible.builtin.apt_repository:
+        repo: "deb [signed-by=/etc/apt/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian-stable binary/"
+        state: present
+        filename: jenkins
+        update_cache: yes
+
+    - name: Install Java and Jenkins
+      ansible.builtin.apt:
+        name:
+          - openjdk-17-jre # Required dependency for Jenkins
+          - jenkins
+        state: present
+
+    - name: Ensure Jenkins service is started and enabled
+      ansible.builtin.service:
+        name: jenkins
+        state: started
+        enabled: yes
+
+    - name: Wait for Jenkins to generate admin password
+      ansible.builtin.wait_for:
+        path: /var/lib/jenkins/secrets/initialAdminPassword
+        delay: 5
+
+    - name: Read initial admin password
+      ansible.builtin.command: cat /var/lib/jenkins/secrets/initialAdminPassword
+      register: admin_password
+      changed_when: false
+
+    - name: Display Initial Admin Password
+      ansible.builtin.debug:
+        msg: "Your Jenkins Initial Admin Password is: {{ admin_password.stdout }}"

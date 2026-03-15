@@ -1,4 +1,7 @@
 # Local .terraform directory (provider binaries and modules)
+jenkins-deployment/.DS_Store
+ecs-deployment/.DS_Store
+.DS_Store
 *.pem
 .terraform/
 jenkins-deployment/.DS_Store

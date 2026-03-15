@@ -77,4 +77,7 @@ variable "public-subnet-id" {
   description = "public-subnet-id"
   type = string
 }
-
+variable "stop_jenkins_instance_id" {
+  description = "stop_jenkins_instance_id"
+  type = string
+}
